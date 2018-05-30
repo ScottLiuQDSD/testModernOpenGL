@@ -1,4 +1,4 @@
-#include "glew.h"
+#include "GL/glew.h"
 #include "glm\gtc\type_ptr.hpp"
 #include "GLFW\glfw3.h"
 #include "tdogl\Texture.h"

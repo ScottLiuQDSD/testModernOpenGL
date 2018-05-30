@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "glew.h"
+#include "GL/glew.h"
 #include "GLFW/glfw3.h"
 #include <stdexcept>
 #include <vector>
@@ -170,12 +170,12 @@ void AppMain()
 	// clean up and exit
 	glfwTerminate();
 }
-void AppMain_4();
+void AppMain_7();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	try {
-		AppMain_4();
+		AppMain_7();
 	} catch (const std::exception& e) {
 		std::cerr << "ERROR: " << e.what() << std::endl;
 		return EXIT_FAILURE;

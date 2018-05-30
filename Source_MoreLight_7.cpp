@@ -33,17 +33,20 @@ struct ModelAsset {
 	GLenum			drawType;
 	GLint			drawStart;
 	GLint			drawCount;
-	ModelAsset():
+	GLfloat			shininess;
+	glm::vec3		specularColor;
+
+	ModelAsset() :
 		shaders(nullptr),
 		texture(nullptr),
 		vbo(0),
 		vao(0),
 		drawType(GL_TRIANGLES),
 		drawStart(0),
-		drawCount(0)
-	{
-
-	}
+		drawCount(0),
+		shininess(0.0f),
+		specularColor(1.0f, 1.0f, 1.0f)
+	{ }
 };
 
 /*
@@ -57,65 +60,68 @@ struct ModelInstance {
 	ModelInstance():
 		asset(nullptr),
 		transform()
-	{
-
-	}
+	{ }
 };
 
 /*
  Represents a point light
 */
 struct Light {
-	glm::vec3 position;
-	glm::vec3 intensities; //a.k.a. the color of the light
+	glm::vec3	position;
+	glm::vec3	intensities; //a.k.a. the color of the light
+	float		attenuation;
+	float		ambientCoefficient;
 };
 
 // constants
-const glm::vec2 SCREEN_SIZE6(800, 600);
+const glm::vec2 SCREEN_SIZE7(800, 600);
 
 // globals
-GLFWwindow	*gWindow6 = nullptr;
-double gScrollY6 = 0.0;
-tdogl::Camera gCamera6;
-ModelAsset gWoodenCrate6;
-std::list<ModelInstance> gInstances6;
-GLfloat gDegreesRotated6 = 0.0f;
-Light gLight6;
-std::string path6 = std::string("F:/Demo/TestVTKDemo/testModernOpenGL/");
+GLFWwindow	*gWindow7 = nullptr;
+double gScrollY7 = 0.0;
+tdogl::Camera gCamera7;
+ModelAsset gWoodenCrate7;
+std::list<ModelInstance> gInstances7;
+GLfloat gDegreesRotated7 = 0.0f;
+Light gLight7;
+std::string path7 = std::string("F:/Demo/TestVTKDemo/testModernOpenGL/");
 
 // return a new tdogl::Program created from the given vertex and fragment shader filenames
-static tdogl::Program* LoadShaders6(const char* vertFilename, const char* fragFilename)
+static tdogl::Program* LoadShaders7(const char* vertFilename, const char* fragFilename)
 {
 	std::vector<tdogl::Shader> shaders;
-	shaders.push_back(tdogl::Shader::shaderFromFile(path6 + vertFilename, GL_VERTEX_SHADER));
-	shaders.push_back(tdogl::Shader::shaderFromFile(path6 + fragFilename, GL_FRAGMENT_SHADER));
+	shaders.push_back(tdogl::Shader::shaderFromFile(path7 + vertFilename, GL_VERTEX_SHADER));
+	shaders.push_back(tdogl::Shader::shaderFromFile(path7 + fragFilename, GL_FRAGMENT_SHADER));
 	return new tdogl::Program(shaders);
 }
 
 // returns a new tdogl::Texture created from the given filename
-static tdogl::Texture* LoadTexture6(const char* filename)
+static tdogl::Texture* LoadTexture7(const char* filename)
 {
-	tdogl::Bitmap bmp = tdogl::Bitmap::bitmapFromFile(path6 + filename);
+	tdogl::Bitmap bmp = tdogl::Bitmap::bitmapFromFile(path7 + filename);
 	bmp.flipVertically();
 	return new tdogl::Texture(bmp);
 }
 
+
 // initialses the gWoodenCrate global
-static void LoadWoodenCrateAsset6()
+static void LoadWoodenCrateAsset7()
 {
-	gWoodenCrate6.shaders = LoadShaders6("vertexShaders.txt", "FragmentShaders.txt");
-	gWoodenCrate6.drawType = GL_TRIANGLES;
-	gWoodenCrate6.drawStart = 0;
-	gWoodenCrate6.drawCount = 6 * 2 * 3;
-	gWoodenCrate6.texture = LoadTexture6("wooden-crate.jpg");
-	glGenBuffers(1, &gWoodenCrate6.vbo);
-	glGenVertexArrays(1, &gWoodenCrate6.vao);
+	gWoodenCrate7.shaders = LoadShaders7("vertexShaders.txt", "FragmentShaders.txt");
+	gWoodenCrate7.drawType = GL_TRIANGLES;
+	gWoodenCrate7.drawStart = 0;
+	gWoodenCrate7.drawCount = 6 * 2 * 3;
+	gWoodenCrate7.texture = LoadTexture7("wooden-crate.jpg");
+	gWoodenCrate7.shininess = 80.0;
+	gWoodenCrate7.specularColor = glm::vec3(1.0f, 1.0f, 1.0f);
+	glGenBuffers(1, &gWoodenCrate7.vbo);
+	glGenVertexArrays(1, &gWoodenCrate7.vao);
 
 	//bind the vao
-	glBindVertexArray(gWoodenCrate6.vao);
+	glBindVertexArray(gWoodenCrate7.vao);
 
 	//bind the vbo
-	glBindBuffer(GL_ARRAY_BUFFER, gWoodenCrate6.vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, gWoodenCrate7.vbo);
 
 	//make a cube out of triangles (two triangles per side)
 	GLfloat vertexData[] = {
@@ -171,77 +177,83 @@ static void LoadWoodenCrateAsset6()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
 
 	// connect the xyz to the "vert" attribute of the vertex shader.
-	glEnableVertexAttribArray(gWoodenCrate6.shaders->attrib("vert"));
-	glVertexAttribPointer(gWoodenCrate6.shaders->attrib("vert"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), NULL);
+	glEnableVertexAttribArray(gWoodenCrate7.shaders->attrib("vert"));
+	glVertexAttribPointer(gWoodenCrate7.shaders->attrib("vert"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), NULL);
 
 	// connect the uv coords to the "vertTexCoord" attribute of the vertex shader
-	glEnableVertexAttribArray(gWoodenCrate6.shaders->attrib("vertTexCoord"));
-	glVertexAttribPointer(gWoodenCrate6.shaders->attrib("vertTexCoord"), 2, GL_FLOAT, GL_TRUE, 8 * sizeof(GLfloat), (const GLvoid*) (3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(gWoodenCrate7.shaders->attrib("vertTexCoord"));
+	glVertexAttribPointer(gWoodenCrate7.shaders->attrib("vertTexCoord"), 2, GL_FLOAT, GL_TRUE, 8 * sizeof(GLfloat), (const GLvoid*) (3 * sizeof(GLfloat)));
 
 	// connect the normal to the "vertNormal" attribute of the vertex shader
-	glEnableVertexAttribArray(gWoodenCrate6.shaders->attrib("vertNormal"));
-	glVertexAttribPointer(gWoodenCrate6.shaders->attrib("vertNormal"), 3, GL_FLOAT, GL_TRUE, 8 * sizeof(GLfloat), (const GLvoid*) (5 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(gWoodenCrate7.shaders->attrib("vertNormal"));
+	glVertexAttribPointer(gWoodenCrate7.shaders->attrib("vertNormal"), 3, GL_FLOAT, GL_TRUE, 8 * sizeof(GLfloat), (const GLvoid*) (5 * sizeof(GLfloat)));
 
 	// unbind the vao
 	glBindVertexArray(0);
 }
 
 // convenience function that returns a translation matrix
-glm::mat4 translate6(GLfloat x, GLfloat y, GLfloat z)
+glm::mat4 translate7(GLfloat x, GLfloat y, GLfloat z)
 {
 	return glm::translate(glm::mat4(), glm::vec3(x, y, z));
 }
 
 
 // convenience function that returns a scaling matrix
-glm::mat4 scale6(GLfloat x, GLfloat y, GLfloat z)
+glm::mat4 scale7(GLfloat x, GLfloat y, GLfloat z)
 {
 	return glm::scale(glm::mat4(), glm::vec3(x, y, z));
 }
 
-static void CreateInstances6()
+static void CreateInstances7()
 {
 	ModelInstance dot;
-	dot.asset = &gWoodenCrate6;
+	dot.asset = &gWoodenCrate7;
 	dot.transform = glm::mat4();
-	gInstances6.push_back(dot);
+	gInstances7.push_back(dot);
 
 	ModelInstance i;
-	i.asset = &gWoodenCrate6;
-	i.transform = translate6(0, -4, 0) * scale6(1, 2, 1);
-	gInstances6.push_back(i);
+	i.asset = &gWoodenCrate7;
+	i.transform = translate7(0, -4, 0) * scale7(1, 2, 1);
+	gInstances7.push_back(i);
 
 	ModelInstance hLeft;
-	hLeft.asset = &gWoodenCrate6;
-	hLeft.transform = translate6(-8, 0, 0) * scale6(1, 6, 1);
-	gInstances6.push_back(hLeft);
+	hLeft.asset = &gWoodenCrate7;
+	hLeft.transform = translate7(-8, 0, 0) * scale7(1, 6, 1);
+	gInstances7.push_back(hLeft);
 
 	ModelInstance hRight;
-	hRight.asset = &gWoodenCrate6;
-	hRight.transform = translate6(-4, 0, 0) * scale6(1, 6, 1);
-	gInstances6.push_back(hRight);
+	hRight.asset = &gWoodenCrate7;
+	hRight.transform = translate7(-4, 0, 0) * scale7(1, 6, 1);
+	gInstances7.push_back(hRight);
 
 	ModelInstance hMid;
-	hMid.asset = &gWoodenCrate6;
-	hMid.transform = translate6(-6, 0, 0) * scale6(2, 1, 0.8f);
-	gInstances6.push_back(hMid);
+	hMid.asset = &gWoodenCrate7;
+	hMid.transform = translate7(-6, 0, 0) * scale7(2, 1, 0.8f);
+	gInstances7.push_back(hMid);
 }
 
 // renders a single 'ModelInstance'
-static void RenderInstance6(const ModelInstance& inst)
+static void RenderInstance7(const ModelInstance& inst)
 {
 	ModelAsset *asset = inst.asset;
-	tdogl::Program *shader = asset->shaders;
+	tdogl::Program *shaders = asset->shaders;
 
 	//bind the shaders
-	shader->use();
+	shaders->use();
 
 	//set the shader uniforms
-	shader->setUniform("camera", gCamera6.matrix());
-	shader->setUniform("model", inst.transform);
-	shader->setUniform("tex", 0);	// set to 0 because the texture will be bound to GL_TEXTURE0
-	shader->setUniform("light.position", gLight6.position);
-	shader->setUniform("light.intensities", gLight6.intensities);
+	shaders->setUniform("camera", gCamera7.matrix());
+	shaders->setUniform("model", inst.transform);
+	shaders->setUniform("materialTex", 0); //set to 0 because the texture will be bound to GL_TEXTURE0
+	shaders->setUniform("materialShininess", asset->shininess);
+	shaders->setUniform("materialSpecularColor", asset->specularColor);
+	shaders->setUniform("light.position", gLight7.position);
+	shaders->setUniform("light.intensities", gLight7.intensities);
+	shaders->setUniform("light.attenuation", gLight7.attenuation);
+	shaders->setUniform("light.ambientCoefficient", gLight7.ambientCoefficient);
+	shaders->setUniform("cameraPosition", gCamera7.position());
+
 
 	//bind the texture
 	glActiveTexture(GL_TEXTURE0);
@@ -254,11 +266,11 @@ static void RenderInstance6(const ModelInstance& inst)
 	//unbind everything
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	shader->stopUsing();
+	shaders->stopUsing();
 }
 
 //draw a single frame
-static void Render6()
+static void Render7()
 {
 	// clear everything
 	glClearColor(0, 0, 0, 1);
@@ -266,87 +278,89 @@ static void Render6()
 	
 	// render all the instances
 	std::list<ModelInstance>::const_iterator iter;
-	for (iter = gInstances6.begin(); iter != gInstances6.end(); ++iter) {
-		RenderInstance6(*iter);
+	for (iter = gInstances7.begin(); iter != gInstances7.end(); ++iter) {
+		RenderInstance7(*iter);
 	}
 
 	//swap the display buffers (displays what was just drawn)
-	glfwSwapBuffers(gWindow6);
+	glfwSwapBuffers(gWindow7);
 }
 
 // update the scene based on the time elapsed since last update
-static void Update6(float secondsElapsed)
+static void Update7(float secondsElapsed)
 {
 	//rotate the first instance in `gInstances`
 	const GLfloat degreesPerSecond = 180.0f;
-	gDegreesRotated6 += secondsElapsed * degreesPerSecond;
-	while (gDegreesRotated6 > 360.0f)
-		gDegreesRotated6 -= 360.0f;
-	gInstances6.front().transform = glm::rotate(glm::mat4(), glm::radians(gDegreesRotated6), glm::vec3(0, 1, 0));
+	gDegreesRotated7 += secondsElapsed * degreesPerSecond;
+	while (gDegreesRotated7 > 360.0f)
+		gDegreesRotated7 -= 360.0f;
+	gInstances7.front().transform = glm::rotate(glm::mat4(), glm::radians(gDegreesRotated7), glm::vec3(0, 1, 0));
 
 	//move position of camera based on WASD keys, and XZ keys for up and down
 	const float moveSpeed = 4.0; //units per second
-	if (glfwGetKey(gWindow6, 'S')) {
-		gCamera6.offsetPosition(secondsElapsed * moveSpeed * -gCamera6.forward());
-	} else if (glfwGetKey(gWindow6, 'W')) {
-		gCamera6.offsetPosition(secondsElapsed * moveSpeed * gCamera6.forward());
+	if (glfwGetKey(gWindow7, 'S')) {
+		gCamera7.offsetPosition(secondsElapsed * moveSpeed * -gCamera7.forward());
+	} else if (glfwGetKey(gWindow7, 'W')) {
+		gCamera7.offsetPosition(secondsElapsed * moveSpeed * gCamera7.forward());
 	}
-	if (glfwGetKey(gWindow6, 'A')) {
-		gCamera6.offsetPosition(secondsElapsed * moveSpeed * -gCamera6.right());
-	} else if (glfwGetKey(gWindow6, 'D')) {
-		gCamera6.offsetPosition(secondsElapsed * moveSpeed * gCamera6.right());
+	if (glfwGetKey(gWindow7, 'A')) {
+		gCamera7.offsetPosition(secondsElapsed * moveSpeed * -gCamera7.right());
+	} else if (glfwGetKey(gWindow7, 'D')) {
+		gCamera7.offsetPosition(secondsElapsed * moveSpeed * gCamera7.right());
 	}
-	if (glfwGetKey(gWindow6, 'Z')) {
-		gCamera6.offsetPosition(secondsElapsed * moveSpeed * -glm::vec3(0, 1, 0));
-	} else if (glfwGetKey(gWindow6, 'X')) {
-		gCamera6.offsetPosition(secondsElapsed * moveSpeed * glm::vec3(0, 1, 0));
+	if (glfwGetKey(gWindow7, 'Z')) {
+		gCamera7.offsetPosition(secondsElapsed * moveSpeed * -glm::vec3(0, 1, 0));
+	} else if (glfwGetKey(gWindow7, 'X')) {
+		gCamera7.offsetPosition(secondsElapsed * moveSpeed * glm::vec3(0, 1, 0));
 	}
 
 	//move light
-	if (glfwGetKey(gWindow6, '1'))
-		gLight6.position = gCamera6.position();
+	if (glfwGetKey(gWindow7, '1'))
+		gLight7.position = gCamera7.position();
+	else if (glfwGetKey(gWindow7, '2'))
+		gLight7.position = glm::vec3(-4, 0, 4);
 
 	// change light color
-	if (glfwGetKey(gWindow6, '2'))
-		gLight6.intensities = glm::vec3(1, 0, 0); //red
-	else if (glfwGetKey(gWindow6, '3'))
-		gLight6.intensities = glm::vec3(0, 1, 0); //green
-	else if (glfwGetKey(gWindow6, '4'))
-		gLight6.intensities = glm::vec3(1, 1, 1); //white
+	if (glfwGetKey(gWindow7, '3'))
+		gLight7.intensities = glm::vec3(1, 0, 0); //red
+	else if (glfwGetKey(gWindow7, '4'))
+		gLight7.intensities = glm::vec3(0, 1, 0); //green
+	else if (glfwGetKey(gWindow7, '5'))
+		gLight7.intensities = glm::vec3(1, 1, 1); //white
 
 
 	//rotate camera based on mouse movement
 	const float mouseSensitivity = 0.1f;
 	double mouseX, mouseY;
-	glfwGetCursorPos(gWindow6, &mouseX, &mouseY);
-	gCamera6.offsetOrientation(mouseSensitivity * (float) mouseY, mouseSensitivity * (float) mouseX);
-	glfwSetCursorPos(gWindow6, 0, 0); //reset the mouse, so it doesn't go out of the window
+	glfwGetCursorPos(gWindow7, &mouseX, &mouseY);
+	gCamera7.offsetOrientation(mouseSensitivity * (float) mouseY, mouseSensitivity * (float) mouseX);
+	glfwSetCursorPos(gWindow7, 0, 0); //reset the mouse, so it doesn't go out of the window
 
 	//increase or decrease field of view based on mouse wheel
 	const float zoomSensitivity = -0.2f;
-	float fieldOfView = gCamera6.fieldOfView() + zoomSensitivity * (float) gScrollY6;
+	float fieldOfView = gCamera7.fieldOfView() + zoomSensitivity * (float) gScrollY7;
 	if (fieldOfView < 5.0f) fieldOfView = 5.0f;
 	if (fieldOfView > 130.0f) fieldOfView = 130.0f;
-	gCamera6.setFieldOfView(fieldOfView);
-	gScrollY6 = 0;
+	gCamera7.setFieldOfView(fieldOfView);
+	gScrollY7 = 0;
 }
 
 // records how far the y axis has been scrolled
-void OnScroll6(GLFWwindow* window, double deltaX, double deltaY)
+void OnScroll7(GLFWwindow* window, double deltaX, double deltaY)
 {
-	gScrollY6 += deltaY;
+	gScrollY7 += deltaY;
 }
 
-void OnError6(int errorCode, const char* msg)
+void OnError7(int errorCode, const char* msg)
 {
 	throw std::runtime_error(msg);
 }
 
 // the program starts here
-void AppMain_6()
+void AppMain_7()
 {
 	// initialize GLFW
-	glfwSetErrorCallback(OnError6);
+	glfwSetErrorCallback(OnError7);
 	if (!glfwInit())
 		throw std::runtime_error("glfwInit failed");
 
@@ -356,15 +370,15 @@ void AppMain_6()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	gWindow6 = glfwCreateWindow((int) SCREEN_SIZE6.x, (int) SCREEN_SIZE6.y, "OpenGL Tutorial", NULL, NULL);
-	if (!gWindow6)
+	gWindow7 = glfwCreateWindow((int) SCREEN_SIZE7.x, (int) SCREEN_SIZE7.y, "OpenGL Tutorial", NULL, NULL);
+	if (!gWindow7)
 		throw std::runtime_error("glfwCreateWindow failed. Can your hardware handle OpenGL 3.2?");
 
 	// GLFW settings
-	glfwSetInputMode(gWindow6, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetCursorPos(gWindow6, 0, 0);
-	glfwSetScrollCallback(gWindow6, OnScroll6);
-	glfwMakeContextCurrent(gWindow6);
+	glfwSetInputMode(gWindow7, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPos(gWindow7, 0, 0);
+	glfwSetScrollCallback(gWindow7, OnScroll7);
+	glfwMakeContextCurrent(gWindow7);
 
 	// initialize GLEW
 	glewExperimental = GL_TRUE; //stops glew crashing on OSX :-/
@@ -391,33 +405,35 @@ void AppMain_6()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// initialize the gWoodenCrate asset
-	LoadWoodenCrateAsset6();
+	LoadWoodenCrateAsset7();
 
 	// create all the instances in the 3D scene based on the gWoodenCrate asset
-	CreateInstances6();
+	CreateInstances7();
 
 	// setup gCamera
-	gCamera6.setPosition(glm::vec3(-4, 0, 17));
-	gCamera6.setViewportAspectRatio(SCREEN_SIZE6.x / SCREEN_SIZE6.y);
-	gCamera6.setNearAndFarPlanes(0.5f, 100.0f);
+	gCamera7.setPosition(glm::vec3(-4, 0, 17));
+	gCamera7.setViewportAspectRatio(SCREEN_SIZE7.x / SCREEN_SIZE7.y);
+	gCamera7.setNearAndFarPlanes(0.5f, 100.0f);
 
 	// setup gLight
-	gLight6.position = gCamera6.position();
-	gLight6.intensities = glm::vec3(1, 1, 1); //white
+	gLight7.position = glm::vec3(-4, 0, 4);
+	gLight7.intensities = glm::vec3(1, 1, 1); //white
+	gLight7.attenuation = 0.2f;
+	gLight7.ambientCoefficient = 0.005f;
 
 	// run while the window is open
 	float lastTime = (float) glfwGetTime();
-	while (!glfwWindowShouldClose(gWindow6)) {
+	while (!glfwWindowShouldClose(gWindow7)) {
 		// process pending events
 		glfwPollEvents();
 
 		// update the scene based on the time elapsed since last update
 		float thisTime = (float) glfwGetTime();
-		Update6(thisTime - lastTime);
+		Update7(thisTime - lastTime);
 		lastTime = thisTime;
 
 		// draw one frame
-		Render6();
+		Render7();
 
 		// check for errors
 		GLenum error = glGetError();
@@ -425,8 +441,8 @@ void AppMain_6()
 			std::cerr << "OpenGL Error " << error << std::endl;
 
 		//exit program if escape key is pressed
-		if (glfwGetKey(gWindow6, GLFW_KEY_ESCAPE))
-			glfwSetWindowShouldClose(gWindow6, GL_TRUE);
+		if (glfwGetKey(gWindow7, GLFW_KEY_ESCAPE))
+			glfwSetWindowShouldClose(gWindow7, GL_TRUE);
 	}
 
 	// clean up and exit
