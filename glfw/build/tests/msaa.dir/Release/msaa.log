@@ -1,0 +1,21 @@
+﻿Build started 2018/5/25 15:40:42.
+     1>Project "F:\Demo\TestVTKDemo\testModernOpenGL\glfw\build\tests\msaa.vcxproj" on node 3 (Build target(s)).
+     1>CustomBuild:
+         Building Custom Rule F:/Demo/TestVTKDemo/testModernOpenGL/glfw/tests/CMakeLists.txt
+         CMake does not need to re-run because F:/Demo/TestVTKDemo/testModernOpenGL/glfw/build/tests/CMakeFiles/generate.stamp is up-to-date.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IF:\Demo\TestVTKDemo\testModernOpenGL\glfw\deps /IF:\Demo\TestVTKDemo\testModernOpenGL\glfw\include /nologo /W3 /WX- /O2 /Ob2 /Oy- /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /D "CMAKE_INTDIR=\"Release\"" /D _MBCS /Gm- /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"msaa.dir\Release\\" /Fd"msaa.dir\Release\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt F:\Demo\TestVTKDemo\testModernOpenGL\glfw\tests\msaa.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\deps\getopt.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\deps\glad.c
+         msaa.c
+         getopt.c
+         glad.c
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\Demo\TestVTKDemo\testModernOpenGL\glfw\build\tests\Release\msaa.exe" /INCREMENTAL:NO /NOLOGO ..\src\Release\glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"F:/Demo/TestVTKDemo/testModernOpenGL/glfw/build/tests/Release/msaa.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /ENTRY:"mainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/Demo/TestVTKDemo/testModernOpenGL/glfw/build/tests/Release/msaa.lib" /MACHINE:X86 /SAFESEH  /machine:X86 msaa.dir\Release\msaa.obj
+         msaa.dir\Release\getopt.obj
+         msaa.dir\Release\glad.obj
+         msaa.vcxproj -> F:\Demo\TestVTKDemo\testModernOpenGL\glfw\build\tests\Release\msaa.exe
+     1>Done Building Project "F:\Demo\TestVTKDemo\testModernOpenGL\glfw\build\tests\msaa.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.94

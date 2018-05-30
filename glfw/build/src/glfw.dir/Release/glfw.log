@@ -1,0 +1,43 @@
+﻿Build started 2018/5/25 15:40:28.
+     1>Project "F:\Demo\TestVTKDemo\testModernOpenGL\glfw\build\src\glfw.vcxproj" on node 2 (Build target(s)).
+     1>CustomBuild:
+         Building Custom Rule F:/Demo/TestVTKDemo/testModernOpenGL/glfw/src/CMakeLists.txt
+         CMake does not need to re-run because F:/Demo/TestVTKDemo/testModernOpenGL/glfw/build/src/CMakeFiles/generate.stamp is up-to-date.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IF:\Demo\TestVTKDemo\testModernOpenGL\glfw\include /IF:\Demo\TestVTKDemo\testModernOpenGL\glfw\src /IF:\Demo\TestVTKDemo\testModernOpenGL\glfw\build\src /nologo /W3 /WX- /O2 /Ob2 /Oy- /D WIN32 /D _WINDOWS /D NDEBUG /D _GLFW_USE_CONFIG_H /D _CRT_SECURE_NO_WARNINGS /D "CMAKE_INTDIR=\"Release\"" /D _MBCS /Gm- /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"glfw.dir\Release\\" /Fd"glfw.dir\Release\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\context.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\init.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\input.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\monitor.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\vulkan.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\window.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\win32_init.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\win32_joystick.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\win32_monitor.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\win32_time.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\win32_tls.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\win32_window.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\wgl_context.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\src\egl_context.c
+         context.c
+         init.c
+         input.c
+         monitor.c
+         vulkan.c
+         window.c
+         win32_init.c
+         win32_joystick.c
+         win32_monitor.c
+         win32_time.c
+         win32_tls.c
+         win32_window.c
+         wgl_context.c
+         egl_context.c
+         Generating Code...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"F:\Demo\TestVTKDemo\testModernOpenGL\glfw\build\src\Release\glfw3.lib" /NOLOGO  /machine:X86 glfw.dir\Release\context.obj
+         glfw.dir\Release\init.obj
+         glfw.dir\Release\input.obj
+         glfw.dir\Release\monitor.obj
+         glfw.dir\Release\vulkan.obj
+         glfw.dir\Release\window.obj
+         glfw.dir\Release\win32_init.obj
+         glfw.dir\Release\win32_joystick.obj
+         glfw.dir\Release\win32_monitor.obj
+         glfw.dir\Release\win32_time.obj
+         glfw.dir\Release\win32_tls.obj
+         glfw.dir\Release\win32_window.obj
+         glfw.dir\Release\wgl_context.obj
+         glfw.dir\Release\egl_context.obj
+         glfw.vcxproj -> F:\Demo\TestVTKDemo\testModernOpenGL\glfw\build\src\Release\glfw3.lib
+     1>Done Building Project "F:\Demo\TestVTKDemo\testModernOpenGL\glfw\build\src\glfw.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:06.21

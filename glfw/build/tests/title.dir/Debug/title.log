@@ -1,0 +1,20 @@
+﻿Build started 2018/5/25 15:39:44.
+     1>Project "F:\Demo\TestVTKDemo\testModernOpenGL\glfw\build\tests\title.vcxproj" on node 8 (Rebuild target(s)).
+     1>CustomBuild:
+         Building Custom Rule F:/Demo/TestVTKDemo/testModernOpenGL/glfw/tests/CMakeLists.txt
+         CMake does not need to re-run because F:/Demo/TestVTKDemo/testModernOpenGL/glfw/build/tests/CMakeFiles/generate.stamp is up-to-date.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IF:\Demo\TestVTKDemo\testModernOpenGL\glfw\deps /IF:\Demo\TestVTKDemo\testModernOpenGL\glfw\include /Zi /nologo /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _CRT_SECURE_NO_WARNINGS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"title.dir\Debug\\" /Fd"title.dir\Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt F:\Demo\TestVTKDemo\testModernOpenGL\glfw\tests\title.c F:\Demo\TestVTKDemo\testModernOpenGL\glfw\deps\glad.c
+         title.c
+     1>F:\Demo\TestVTKDemo\testModernOpenGL\glfw\tests\title.c : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+         glad.c
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\Demo\TestVTKDemo\testModernOpenGL\glfw\build\tests\Debug\title.exe" /INCREMENTAL /NOLOGO ..\src\Debug\glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:/Demo/TestVTKDemo/testModernOpenGL/glfw/build/tests/Debug/title.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"mainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/Demo/TestVTKDemo/testModernOpenGL/glfw/build/tests/Debug/title.lib" /MACHINE:X86 /SAFESEH  /machine:X86 title.dir\Debug\title.obj
+         title.dir\Debug\glad.obj
+         title.vcxproj -> F:\Demo\TestVTKDemo\testModernOpenGL\glfw\build\tests\Debug\title.exe
+     1>Done Building Project "F:\Demo\TestVTKDemo\testModernOpenGL\glfw\build\tests\title.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:08.07
